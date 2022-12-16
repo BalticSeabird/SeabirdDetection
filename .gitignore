@@ -1,0 +1,10 @@
+**/__pycache__
+**/.bash_history
+**/.cache/       
+**/.config/
+**/runs/
+**/venv
+*.png
+*.svg
+*.csv
+*.tar
