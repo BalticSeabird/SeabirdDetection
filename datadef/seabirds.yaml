@@ -4,7 +4,7 @@ nc: 3
 # class names
 names: [ 'adult', 'chick', 'egg']
 
-train: /work/datasets/train/all.txt
-val: /work/datasets/test/all.txt
-test: /work/datasets/test/all.txt
+train: /usr/src/seabirds/datasets/train/all.txt
+val: /usr/src/seabirds/datasets/test/all.txt
+test: /usr/src/seabirds/datasets/test/all.txt
 

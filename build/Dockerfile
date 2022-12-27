@@ -1,25 +1,29 @@
-FROM nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04
-
-ENV DEBIAN_FRONTEND="noninteractive"
+# Start FROM NVIDIA PyTorch image https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
+FROM nvcr.io/nvidia/pytorch:22.10-py3
+RUN rm -rf /opt/pytorch  # remove 1.2GB dir
 
 # Downloads to user config dir
-ADD https://ultralytics.com/assets/Arial.ttf \
-   https://ultralytics.com/assets/Arial.Unicode.ttf \
-   /root/.config/Ultralytics/
+ADD https://ultralytics.com/assets/Arial.ttf https://ultralytics.com/assets/Arial.Unicode.ttf /root/.config/Ultralytics/
 
 # Install linux packages
-RUN apt-get update && apt-get install --no-install-recommends -y \
-   zip htop tmux git \
-   libgl1-mesa-glx libglib2.0-0 \
-   python3-dev python3-pip 
+RUN apt update && apt install --no-install-recommends -y zip htop screen libgl1-mesa-glx
 
 # Install pip packages
 COPY requirements.txt .
-RUN python3 -m pip install --upgrade pip
-RUN pip install --no-cache -r requirements.txt \
-   --extra-index-url https://download.pytorch.org/whl/cu113
+RUN python -m pip install --upgrade pip wheel
+RUN pip uninstall -y Pillow torchtext  # torch torchvision
+RUN pip install --no-cache -r requirements.txt ultralytics albumentations comet gsutil notebook Pillow>=9.1.0 \
+    'opencv-python<4.6.0.66' \
+    --extra-index-url https://download.pytorch.org/whl/cu113
 
-WORKDIR /app
+# Create working directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Copy contents
+# COPY . /usr/src/app  (issues as not a .git directory)
+#RUN git clone https://github.com/ultralytics/yolov5 /usr/src/app
+RUN git clone --single-branch --branch v7.0 https://github.com/ultralytics/yolov5.git /usr/src/app
 
 # Set environment variables
-ENV OMP_NUM_THREADS=18
+ENV OMP_NUM_THREADS=8

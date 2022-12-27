@@ -1,18 +1,21 @@
 #!/usr/bin/python3
 
+import config
 import sys
 
-sys.path.insert(0, "/app/yolov5")
+sys.path.insert(0, "/usr/src/app")
 
 import export as yolov5_export
 
 # Change to fit your setup.
-# imgsz=(384, 640)
-imgsz = (544, 960)
-weights = "/work/models/20221202125230_seabirds_m_960.pt"
+imgsz = (384, 640)
+# imgsz = (544, 960)
+dataset = config.Datasets.SEABIRD1TO6
+weights = "/usr/src/seabirds/models/20221227090205_seabirds_m_640.pt"
+
 
 yolov5_export.run(
-    data="/work/datadef/seabirds.yaml",
+    data=f"/usr/src/seabirds/datadef/{dataset}",
     weights=weights,
     imgsz=imgsz,
     batch_size=1,  # 128,
