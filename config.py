@@ -4,6 +4,19 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class SeabirdTypes:
+    ADULT: str = "adult"
+    CHICK: str = "chick"
+    EGG: str = "egg"
+
+
+@dataclass(frozen=True)
+class YolovDataDirs:
+    IMAGES: str = "images"
+    LABELS: str = "labels"
+
+
+@dataclass(frozen=True)
 class Yolov5Modles:
     NANO: str = "n"
     SMALL: str = "s"
